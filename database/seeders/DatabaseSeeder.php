@@ -1,23 +1,4 @@
 <?php
-
 namespace Database\Seeders;
-
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-
-class DatabaseSeeder extends Seeder
-{
-    /**
-     * Seed the application's database.
-     */
-    public function run(): void
-    {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-    }
-}
+use Illuminate\Database\Seeder; use App\Models\AiModel;
+class DatabaseSeeder extends Seeder { public function run(): void { foreach([['name'=>'GPT-4o','slug'=>'openai/gpt-4o','provider'=>'OpenAI','description'=>'Fast multimodal model for production workloads.','input_price'=>5000000,'output_price'=>15000000,'context_window'=>128000],['name'=>'Claude 3.5 Sonnet','slug'=>'anthropic/claude-3-5-sonnet','provider'=>'Anthropic','description'=>'Strong reasoning and coding performance.','input_price'=>3000000,'output_price'=>15000000,'context_window'=>200000],['name'=>'Gemini 1.5 Pro','slug'=>'google/gemini-1.5-pro','provider'=>'Google','description'=>'Long-context model for complex tasks.','input_price'=>125000,'output_price'=>500000,'context_window'=>200000],['name'=>'Llama 3.1 70B','slug'=>'meta-llama/llama-3.1-70b','provider'=>'Meta','description'=>'Open weights model with excellent quality.','input_price'=>52000,'output_price'=>75000,'context_window'=>131072]] as $model){AiModel::updateOrCreate(['slug'=>$model['slug']],$model);} } }
