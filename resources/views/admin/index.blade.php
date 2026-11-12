@@ -1,1 +1,55 @@
-@extends('layout') @section('content')<main class="wrap"><div class="inline"><div><div class="eyebrow">Operations</div><h1>Админ-панель</h1><p class="muted">Тарифы, активность API и состояние платформы.</p></div><a class="btn secondary" href="{{ route('dashboard') }}">В кабинет</a></div>@if(session('status'))<div class="alert">{{ session('status') }}</div>@endif<div class="statgrid"><div class="stat"><small>Пользователи</small><strong>{{ $users }}</strong></div><div class="stat"><small>API-запросы</small><strong>{{ $usage->requests }}</strong></div><div class="stat"><small>Списано</small><strong>${{ number_format($usage->revenue/100,2) }}</strong></div></div><div class="card"><div class="inline"><div><h2 style="margin:0">Тарифы моделей</h2><p class="muted">Цены хранятся в micro-cents за миллион токенов.</p></div></div><table class="table"><thead><tr><th>Модель</th><th>Provider</th><th>Input / 1M</th><th>Output / 1M</th><th></th></tr></thead><tbody>@foreach($models as $model)<tr><form method="post" action="{{ route('admin.models.update',$model) }}">@csrf @method('PATCH')<td><b>{{ $model->name }}</b><br><small class="muted">{{ $model->slug }}</small></td><td>{{ $model->provider }}</td><td><input name="input_price" value="{{ $model->input_price }}" style="width:115px;padding:8px;border:1px solid #d9e0e9;border-radius:5px"></td><td><input name="output_price" value="{{ $model->output_price }}" style="width:115px;padding:8px;border:1px solid #d9e0e9;border-radius:5px"></td><td><button class="btn primary">Сохранить</button></td></form></tr>@endforeach</tbody></table></div><div class="card" style="margin-top:16px"><h2 style="margin-top:0">Новая модель</h2><form method="post" action="{{ route('admin.models.create') }}" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">@csrf<input name="name" placeholder="Название" required class="key-input"><input name="slug" placeholder="provider/model" required class="key-input"><input name="provider" placeholder="Provider" required class="key-input"><input name="input_price" type="number" placeholder="Input micro-cents" required class="key-input"><input name="output_price" type="number" placeholder="Output micro-cents" required class="key-input"><input name="context_window" type="number" placeholder="Context" value="128000" required class="key-input"><button class="btn primary">Добавить модель</button></form></div></main>@endsection
+@extends("layout")
+@section("content")
+<main class="wrap">
+<div class="inline">
+  <div>
+    <div class="eyebrow">Operations</div>
+    <h1>Админ-панель</h1>
+    <p class="muted">Тарифы, активность API и состояние платформы.</p>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center">
+    <a class="btn secondary" href="{{ route("dashboard") }}">Кабинет</a>
+    <form method="post" action="{{ url("/admin/logout") }}">@csrf<button class="btn" style="background:#fff1f2;color:#be123c">Выйти</button></form>
+  </div>
+</div>
+@if(session("status"))<div class="alert">{{ session("status") }}</div>@endif
+<div class="statgrid">
+  <div class="stat"><small>Пользователи</small><strong>{{ $users }}</strong></div>
+  <div class="stat"><small>API-запросы</small><strong>{{ $usage->requests }}</strong></div>
+  <div class="stat"><small>Списано</small><strong>${{ number_format($usage->revenue/100,2) }}</strong></div>
+</div>
+<div class="card">
+  <div class="inline"><div><h2 style="margin:0">Тарифы моделей</h2><p class="muted">Цены в micro-cents за 1M токенов.</p></div></div>
+  <table class="table">
+    <thead><tr><th>Модель</th><th>Provider</th><th>Input / 1M</th><th>Output / 1M</th><th></th></tr></thead>
+    <tbody>
+    @foreach($models as $model)
+      <tr>
+        <form method="post" action="{{ route("admin.models.update", $model) }}">
+          @csrf @method("PATCH")
+          <td><b>{{ $model->name }}</b><br><small class="muted">{{ $model->slug }}</small></td>
+          <td>{{ $model->provider }}</td>
+          <td><input name="input_price" value="{{ $model->input_price }}" style="width:115px;padding:8px;border:1px solid #d9e0e9;border-radius:5px"></td>
+          <td><input name="output_price" value="{{ $model->output_price }}" style="width:115px;padding:8px;border:1px solid #d9e0e9;border-radius:5px"></td>
+          <td><button class="btn primary">Сохранить</button></td>
+        </form>
+      </tr>
+    @endforeach
+    </tbody>
+  </table>
+</div>
+<div class="card" style="margin-top:16px">
+  <h2 style="margin-top:0">Новая модель</h2>
+  <form method="post" action="{{ route("admin.models.create") }}" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+    @csrf
+    <input name="name" placeholder="Название" required class="key-input">
+    <input name="slug" placeholder="provider/model" required class="key-input">
+    <input name="provider" placeholder="Provider" required class="key-input">
+    <input name="input_price" type="number" placeholder="Input micro-cents" required class="key-input">
+    <input name="output_price" type="number" placeholder="Output micro-cents" required class="key-input">
+    <input name="context_window" type="number" placeholder="Context" value="128000" required class="key-input">
+    <button class="btn primary">Добавить модель</button>
+  </form>
+</div>
+</main>
+@endsection
