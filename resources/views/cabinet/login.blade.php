@@ -30,7 +30,7 @@ a{color:var(--acc2);text-decoration:none}
 <main class="wrap">
   <section class="card">
     <h1>Вход в кабинет</h1>
-    <p class="muted">Email/пароль или вход по API-ключу.</p>
+    <p class="muted">Логин и пароль — после регистрации. Или войдите по API-ключу.</p>
     @if($errors->has('email') || $errors->has('password'))<div class="err">{{ $errors->first() }}</div>@endif
     <form method="post" action="{{ secure_url('/cabinet/login') }}">
       @csrf

@@ -31,6 +31,7 @@ class CabinetController extends Controller
             return back()->withErrors(['email' => 'Неверный email или пароль.'])->onlyInput('email');
         }
         $r->session()->regenerate();
+        $r->session()->forget(['cabinet_key_id', 'cabinet_raw_key']);
         return redirect()->intended(route('cabinet'));
     }
 
@@ -45,6 +46,7 @@ class CabinetController extends Controller
         Auth::login($record->user);
         $r->session()->regenerate();
         $r->session()->put('cabinet_key_id', $record->id);
+        $r->session()->put('cabinet_raw_key', $raw);
         return redirect()->route('cabinet');
     }
 
@@ -59,7 +61,7 @@ class CabinetController extends Controller
     public function index()
     {
         $u = Auth::user();
-        $wallet = Wallet::firstOrCreate(['user_id' => $u->id]);
+        $wallet = Wallet::firstOrCreate(['user_id' => $u->id], ['balance' => 0]);
         $keys = $u->apiKeys()->latest()->get();
         $models = AiModel::where('is_active', true)->orderBy('name')->get();
         $usageQ = UsageEvent::where('user_id', $u->id);
@@ -96,11 +98,18 @@ class CabinetController extends Controller
             $activeKey = $keys->first();
         }
         $totalTopups = (int) LedgerEntry::where('user_id', $u->id)->where('type', 'credit')->sum('amount');
-        $remainPct = $totalTopups > 0 ? max(0, min(100, (int) round(($wallet->balance / $totalTopups) * 100))) : 100;
+        $base = max($totalTopups, $wallet->balance + $spent, 1);
+        $remainPct = (int) max(0, min(100, round(($wallet->balance / $base) * 100)));
+        $packName = $activeKey
+            ? ($activeKey->name !== 'default' ? $activeKey->name : ($activeKey->key_prefix.'…'))
+            : $u->email;
+        $sessionKey = session('cabinet_raw_key');
+        $baseUrl = rtrim(config('app.url'), '/').'/api/v1';
 
         return view('cabinet.index', compact(
             'u', 'wallet', 'keys', 'models', 'requests', 'requests24', 'spent', 'tokens',
-            'byModel', 'recent', 'chart', 'entries', 'activeKey', 'totalTopups', 'remainPct'
+            'byModel', 'recent', 'chart', 'entries', 'activeKey', 'totalTopups', 'remainPct',
+            'packName', 'sessionKey', 'baseUrl'
         ));
     }
 
@@ -127,7 +136,7 @@ class CabinetController extends Controller
 
     public function topup()
     {
-        $wallet = Wallet::firstOrCreate(['user_id' => Auth::id()]);
+        $wallet = Wallet::firstOrCreate(['user_id' => Auth::id()], ['balance' => 0]);
         $amount = 1000;
         $wallet->increment('balance', $amount);
         LedgerEntry::create([

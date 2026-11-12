@@ -6,17 +6,28 @@
 <title>Кабинет · TokenHub</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Unbounded:wght@600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0b0907;--panel:#12100e;--card:#17120f;--line:#2a221c;--txt:#f5efe8;--muted:#9a8d82;--acc:#ff7a1a;--acc2:#ff9a4d}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font:14px Inter,system-ui,sans-serif}
+:root{--bg:#0b0907;--panel:#12100e;--card:rgba(23,18,15,.88);--line:#2a221c;--txt:#f5efe8;--muted:#9a8d82;--acc:#ff7a1a;--acc2:#ff9a4d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font:14px Inter,system-ui,sans-serif;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:
+  radial-gradient(circle at 12% 18%,rgba(255,140,40,.22) 0 2px,transparent 3px),
+  radial-gradient(circle at 28% 72%,rgba(255,170,60,.18) 0 3px,transparent 5px),
+  radial-gradient(circle at 68% 22%,rgba(255,120,30,.2) 0 4px,transparent 7px),
+  radial-gradient(circle at 82% 64%,rgba(255,160,50,.16) 0 2px,transparent 4px),
+  radial-gradient(circle at 48% 40%,rgba(255,100,20,.12) 0 6px,transparent 10px),
+  radial-gradient(900px 520px at 18% 8%,#3a220f 0%,transparent 55%),
+  radial-gradient(700px 420px at 88% 88%,#2a1608 0%,transparent 50%),
+  var(--bg);filter:blur(.2px)}
 a{color:inherit;text-decoration:none}
-.top{height:64px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 22px;position:sticky;top:0;background:rgba(11,9,7,.92);backdrop-filter:blur(10px);z-index:20}
+.top,.shell,.main,.side{position:relative;z-index:1}
+.top{height:64px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 22px;position:sticky;top:0;background:rgba(11,9,7,.86);backdrop-filter:blur(12px);z-index:20}
 .brand{display:flex;align-items:center;gap:10px;font-family:Unbounded,sans-serif;font-weight:800}
 .mark{width:30px;height:30px;border-radius:8px;background:var(--acc);color:#0b0907;display:grid;place-items:center}
-.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:7px 12px;color:var(--muted);font-size:12px}
+.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:7px 12px;color:var(--muted);font-size:12px;background:rgba(26,21,18,.7)}
 .pill b{color:var(--acc)}
-.who{border:1px solid var(--line);border-radius:999px;padding:7px 12px;background:#1a1512}
+.who{border:1px solid var(--line);border-radius:999px;padding:7px 12px;background:#1a1512;display:inline-flex;align-items:center;gap:8px}
+.who .av{width:22px;height:22px;border-radius:50%;background:var(--acc);color:#0b0907;display:grid;place-items:center;font-size:11px;font-weight:800}
 .shell{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 64px)}
-.side{border-right:1px solid var(--line);padding:18px 12px;background:rgba(18,16,14,.85);position:sticky;top:64px;height:calc(100vh - 64px)}
+.side{border-right:1px solid var(--line);padding:18px 12px;background:rgba(18,16,14,.72);position:sticky;top:64px;height:calc(100vh - 64px);backdrop-filter:blur(8px)}
 .side small{display:block;color:var(--muted);padding:0 10px 12px;text-transform:uppercase;letter-spacing:.08em;font-size:11px}
 .side a,.side button.nav{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;background:transparent;color:var(--muted);padding:11px 12px;border-radius:10px;cursor:pointer;font:inherit}
 .side a.active,.side a:hover,.side button.nav:hover{background:#221b16;color:var(--txt)}
@@ -24,18 +35,18 @@ a{color:inherit;text-decoration:none}
 .side .out{margin-top:18px;color:#ffb4a6}
 .main{padding:24px}
 .hrow{display:flex;justify-content:space-between;gap:16px;align-items:end;margin-bottom:18px}
-h1{font-family:Unbounded,sans-serif;font-size:30px;margin:0}
+h1{font-family:Unbounded,sans-serif;font-size:30px;margin:0;opacity:.95}
 .muted{color:var(--muted)}
 .btn{border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}
 .primary{background:var(--acc);color:#0b0907}
 .ghost{background:transparent;color:var(--txt);border:1px solid var(--line)}
 .stats{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin:16px 0 18px}
-.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;backdrop-filter:blur(6px)}
 .stat small{display:block;color:var(--muted);margin-bottom:8px}
 .stat strong{font-size:18px}
 .stat strong.acc{color:var(--acc)}
 .grid2{display:grid;grid-template-columns:1.4fr .8fr;gap:14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;backdrop-filter:blur(6px)}
 .card h2{margin:0 0 10px;font-size:16px}
 .bar{height:10px;background:#241c17;border-radius:999px;overflow:hidden}
 .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),#ffb070)}
@@ -49,30 +60,34 @@ h1{font-family:Unbounded,sans-serif;font-size:30px;margin:0}
 .table th{color:var(--muted);font-size:11px;text-transform:uppercase}
 .mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12px;background:#100d0b;padding:8px 10px;border-radius:8px;word-break:break-all}
 .alert{background:#1f2a18;color:#c6f6c2;border-radius:10px;padding:12px;margin-bottom:14px}
-.err{background:#3a1510;color:#ffb4a6}
 .section{display:none}
 .section.active{display:block}
 input,textarea,select{width:100%;background:#100d0b;border:1px solid var(--line);border-radius:10px;padding:11px 12px;color:var(--txt);margin:6px 0 12px}
-.chat{display:grid;grid-template-rows:1fr auto;height:60vh;gap:10px}
-.chatlog{overflow:auto;border:1px solid var(--line);border-radius:12px;padding:12px;background:#100d0b}
-.bubble{max-width:80%;padding:10px 12px;border-radius:12px;margin:8px 0}
+.chatwrap{display:grid;grid-template-columns:1fr 260px;gap:14px;min-height:62vh}
+.chat{display:grid;grid-template-rows:auto 1fr auto;gap:10px;min-height:62vh}
+.chatlog{overflow:auto;border:1px solid var(--line);border-radius:12px;padding:12px;background:rgba(16,13,11,.85)}
+.bubble{max-width:80%;padding:10px 12px;border-radius:12px;margin:8px 0;white-space:pre-wrap}
 .me{background:#2a1c12;margin-left:auto}
 .bot{background:#1a1512}
+.prompts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.prompts button{text-align:left;background:#1a1512;border:1px solid var(--line);border-radius:10px;color:var(--txt);padding:10px;cursor:pointer}
+.prompts button small{display:block;color:var(--muted);margin-top:4px;font-size:11px}
 .codebox{background:#100d0b;border:1px solid var(--line);border-radius:12px;padding:14px;font-family:"JetBrains Mono",monospace;font-size:12px;line-height:1.6;overflow:auto}
-@media(max-width:980px){.shell{grid-template-columns:1fr}.side{position:relative;top:0;height:auto;display:flex;gap:6px;overflow:auto}.stats{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.hrow{flex-direction:column;align-items:start}}
+.sidepanel label{display:block;color:var(--muted);font-size:12px;margin-top:8px}
+@media(max-width:980px){.shell{grid-template-columns:1fr}.side{position:relative;top:0;height:auto;display:flex;gap:6px;overflow:auto;flex-wrap:wrap}.stats{grid-template-columns:repeat(2,1fr)}.grid2,.chatwrap{grid-template-columns:1fr}.hrow{flex-direction:column;align-items:start}.prompts{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <header class="top">
   <a class="brand" href="{{ secure_url('/') }}"><span class="mark">T</span>TokenHub</a>
   <div style="display:flex;gap:10px;align-items:center">
-    <a class="pill" href="#overview">Остаток: <b>${{ number_format($wallet->balance/100, 2) }}</b></a>
-    <a class="who" href="#profile">{{ $u->name }}</a>
+    <a class="pill" href="#overview">Остаток ключа: <b>{{ $remainPct }}%</b></a>
+    <a class="who" href="#keys"><span class="av">{{ strtoupper(substr($packName,0,1)) }}</span>{{ $packName }}</a>
   </div>
 </header>
 <div class="shell">
   <aside class="side">
-    <small>кабинет</small>
+    <small>{{ session('cabinet_key_id') ? 'вход по ключу' : 'кабинет' }}</small>
     <a class="active" data-sec="overview" href="#overview">Обзор</a>
     <a data-sec="chat" href="#chat">Чат с ИИ</a>
     <a data-sec="image" href="#image">Генерация фото</a>
@@ -90,7 +105,7 @@ input,textarea,select{width:100%;background:#100d0b;border:1px solid var(--line)
       <div class="hrow">
         <div>
           <h1>Обзор</h1>
-          <div class="muted">{{ $activeKey->name ?? $u->email }}</div>
+          <div class="muted">{{ $packName }}</div>
         </div>
         <div style="display:flex;gap:8px">
           <button class="btn ghost" type="button" data-go="image">Генерация фото</button>
@@ -106,13 +121,14 @@ input,textarea,select{width:100%;background:#100d0b;border:1px solid var(--line)
         <div class="stat"><small>Ключей</small><strong>{{ $keys->count() }}</strong></div>
       </div>
       <div class="card">
-        <h2>Лимит баланса</h2>
-        <div class="muted" style="margin-bottom:8px">Осталось ${{ number_format($wallet->balance/100,2) }} @if($totalTopups>0) из ${{ number_format($totalTopups/100,2) }} пополнений @endif</div>
+        <h2>Лимит ключа</h2>
+        <div class="muted" style="margin-bottom:8px">Осталось {{ $remainPct }}% · ${{ number_format($wallet->balance/100,2) }}</div>
         <div class="bar"><i style="width:{{ $remainPct }}%"></i></div>
       </div>
       <div class="grid2">
         <div class="card">
-          <h2>Использование · 14 дней</h2>
+          <h2>Использование</h2>
+          <div class="muted" style="margin-bottom:8px">Последние 14 дней</div>
           @php $max = max(1, collect($chart)->max('tokens')); @endphp
           <div class="chart">
             @foreach($chart as $c)
@@ -149,7 +165,7 @@ input,textarea,select{width:100%;background:#100d0b;border:1px solid var(--line)
               <td class="muted">{{ $e->created_at->diffForHumans() }}</td>
             </tr>
           @empty
-            <tr><td colspan="5" class="muted">Запросов по этому аккаунту ещё не было</td></tr>
+            <tr><td colspan="5" class="muted">Запросов по этому ключу ещё не было</td></tr>
           @endforelse
           </tbody>
         </table>
@@ -165,24 +181,49 @@ input,textarea,select{width:100%;background:#100d0b;border:1px solid var(--line)
     </section>
 
     <section class="section" id="chat">
-      <div class="hrow"><div><h1>Чат с ИИ</h1><div class="muted">Тестовый чат через ваш API TokenHub</div></div></div>
-      <div class="card chat">
-        <div class="chatlog" id="chatlog"><div class="bubble bot">Напишите сообщение. Будет использован endpoint /api/v1/chat/completions.</div></div>
-        <form id="chatform" style="display:flex;gap:8px">
-          <select id="chatmodel" style="width:220px;margin:0">
-            @foreach($models as $m)<option value="{{ $m->slug }}">{{ $m->name }}</option>@endforeach
+      <div class="hrow"><div><h1>Чат с ИИ</h1><div class="muted">Запросы списываются с баланса ключа</div></div></div>
+      <div class="chatwrap">
+        <div class="card chat">
+          <div class="prompts">
+            <button type="button" data-prompt="Напиши Telegram-бота на Python, который отвечает на сообщения"><b>Напиши код</b><small>Telegram-бот на Python</small></button>
+            <button type="button" data-prompt="Придумай 10 идей для постов в Telegram-канал про нейросети"><b>Придумай идеи</b><small>10 идей для постов</small></button>
+            <button type="button" data-prompt="Объясни простыми словами, как работают нейросети"><b>Объясни просто</b><small>Как работают нейросети</small></button>
+            <button type="button" data-prompt="Исправь ошибки и сделай текст красивее:"><b>Улучши текст</b><small>Правка и стиль</small></button>
+          </div>
+          <div class="chatlog" id="chatlog"><div class="bubble bot">Чем могу помочь?</div></div>
+          <form id="chatform" style="display:flex;gap:8px">
+            <textarea id="chatmsg" rows="2" placeholder="Сообщение… Enter — отправить" style="margin:0;resize:vertical" required></textarea>
+            <button class="btn primary" style="width:auto;align-self:end">Отправить</button>
+          </form>
+        </div>
+        <div class="card sidepanel">
+          <h2>Параметры</h2>
+          <label>Модель</label>
+          <select id="chatmodel">
+            @forelse($models as $m)<option value="{{ $m->slug }}">{{ $m->name }}</option>
+            @empty<option value="openai/gpt-4o-mini">openai/gpt-4o-mini</option>@endforelse
           </select>
-          <input id="chatmsg" placeholder="Сообщение..." style="margin:0" required>
-          <button class="btn primary" style="width:auto">Отправить</button>
-        </form>
-        <p class="muted">Для чата создайте ключ и вставьте его один раз ниже:</p>
-        <input id="chatkey" placeholder="tk_live_… (только в браузере, не сохраняется на сервере)" style="margin:0">
+          <label>Системный промпт</label>
+          <textarea id="system" rows="4" placeholder="Опционально">Ты полезный ассистент TokenHub.</textarea>
+          <label>API-ключ</label>
+          <input id="chatkey" value="{{ $sessionKey }}" placeholder="tk_live_…">
+          <p class="muted" style="font-size:12px">Ключ используется только в браузере для запросов к API.</p>
+          <button class="btn ghost" type="button" id="newchat" style="width:100%;margin-top:8px">Новый чат</button>
+        </div>
       </div>
     </section>
 
     <section class="section" id="image">
-      <div class="hrow"><div><h1>Генерация фото</h1><div class="muted">Раздел в разработке</div></div></div>
-      <div class="card"><p class="muted">Скоро: генерация изображений через тот же баланс и API-ключ.</p></div>
+      <div class="hrow"><div><h1>Генерация фото</h1><div class="muted">Промпт → изображение через ваш баланс</div></div></div>
+      <div class="card">
+        <label class="muted">Промпт</label>
+        <textarea id="imgprompt" rows="3" placeholder="Опиши изображение…"></textarea>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button class="btn primary" type="button" id="imggen">Сгенерировать</button>
+          <span class="muted" id="imgstatus">Эндпоинт /api/v1/images/generations (если доступен у провайдера)</span>
+        </div>
+        <div id="imgout" style="margin-top:14px"></div>
+      </div>
     </section>
 
     <section class="section" id="logs">
@@ -209,7 +250,14 @@ input,textarea,select{width:100%;background:#100d0b;border:1px solid var(--line)
     </section>
 
     <section class="section" id="keys">
-      <div class="hrow"><div><h1>Мой API-ключ</h1><div class="muted">Ключ показывается только при создании</div></div></div>
+      <div class="hrow"><div><h1>Мой API-ключ</h1><div class="muted">Ключ показывается полностью только при создании или входе по ключу</div></div></div>
+      @if($sessionKey)
+      <div class="card">
+        <h2>Активный ключ сессии</h2>
+        <div class="mono" id="sessionkey">{{ $sessionKey }}</div>
+        <button class="btn ghost" type="button" style="margin-top:10px;width:auto" onclick="navigator.clipboard.writeText(document.getElementById('sessionkey').innerText)">Копировать</button>
+      </div>
+      @endif
       <div class="card">
         <form method="post" action="{{ secure_url('/cabinet/keys') }}" style="display:flex;gap:8px;align-items:end">
           @csrf
@@ -245,13 +293,13 @@ input,textarea,select{width:100%;background:#100d0b;border:1px solid var(--line)
       <div class="hrow"><div><h1>Как подключить</h1><div class="muted">OpenAI-compatible endpoint</div></div></div>
       <div class="card">
         <p class="muted">Base URL:</p>
-        <div class="mono">{{ rtrim(config('app.url'), '/') }}/api/v1</div>
+        <div class="mono">{{ $baseUrl }}</div>
         <p class="muted" style="margin-top:14px">Пример curl:</p>
-        <div class="codebox">curl {{ rtrim(config('app.url'), '/') }}/api/v1/chat/completions \
+        <div class="codebox">curl {{ $baseUrl }}/chat/completions \
   -H "Authorization: Bearer YOUR_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"model":"openai/gpt-4o","messages":[{"role":"user","content":"hello"}]}'</div>
-        <p class="muted" style="margin-top:14px">В Cursor / Continue / OpenWebUI укажите этот base URL и ваш ключ.</p>
+  -d '{"model":"openai/gpt-4o-mini","messages":[{"role":"user","content":"hello"}]}'</div>
+        <p class="muted" style="margin-top:14px">В Cursor / Continue / OpenWebUI укажите этот base URL и ваш ключ из раздела «Мой API-ключ».</p>
       </div>
     </section>
 
@@ -282,15 +330,6 @@ input,textarea,select{width:100%;background:#100d0b;border:1px solid var(--line)
         </table>
       </div>
     </section>
-
-    <section class="section" id="profile">
-      <div class="hrow"><div><h1>Профиль</h1><div class="muted">{{ $u->email }}</div></div></div>
-      <div class="card">
-        <p><b>{{ $u->name }}</b></p>
-        <p class="muted">{{ $u->email }}</p>
-        @if($u->is_admin)<p><a class="btn ghost" href="{{ secure_url('/admin') }}">Открыть админку</a></p>@endif
-      </div>
-    </section>
   </main>
 </div>
 <script>
@@ -305,23 +344,55 @@ function go(id){ if(document.getElementById(id)) show(id); }
 links.forEach(a=>a.addEventListener('click',e=>{e.preventDefault();show(a.dataset.sec)}));
 document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
 go((location.hash||'#overview').slice(1));
+
 const form=document.getElementById('chatform');
 const log=document.getElementById('chatlog');
+const msgs=[];
+document.querySelectorAll('[data-prompt]').forEach(b=>b.addEventListener('click',()=>{
+  document.getElementById('chatmsg').value=b.dataset.prompt;
+  document.getElementById('chatmsg').focus();
+}));
+document.getElementById('newchat')?.addEventListener('click',()=>{
+  msgs.length=0; log.innerHTML='<div class="bubble bot">Чем могу помочь?</div>';
+});
 form?.addEventListener('submit', async (e)=>{
   e.preventDefault();
   const key=document.getElementById('chatkey').value.trim();
   const msg=document.getElementById('chatmsg').value.trim();
   const model=document.getElementById('chatmodel').value;
+  const system=document.getElementById('system').value.trim();
   if(!key){ alert('Вставьте API-ключ'); return; }
   log.innerHTML += `<div class="bubble me">${msg.replace(/</g,'&lt;')}</div>`;
   document.getElementById('chatmsg').value='';
+  msgs.push({role:'user',content:msg});
+  const payload={model,messages:[...(system?[{role:'system',content:system}]:[]),...msgs],max_tokens:512};
   try{
-    const r=await fetch('/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model,messages:[{role:'user',content:msg}],max_tokens:128})});
+    const r=await fetch('/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify(payload)});
     const j=await r.json();
     const txt=j?.choices?.[0]?.message?.content || j?.error?.message || JSON.stringify(j);
+    msgs.push({role:'assistant',content:String(txt)});
     log.innerHTML += `<div class="bubble bot">${String(txt).replace(/</g,'&lt;')}</div>`;
   }catch(err){ log.innerHTML += `<div class="bubble bot">Ошибка: ${err}</div>`; }
   log.scrollTop=log.scrollHeight;
+});
+document.getElementById('chatmsg')?.addEventListener('keydown',e=>{
+  if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); form.requestSubmit(); }
+});
+document.getElementById('imggen')?.addEventListener('click', async ()=>{
+  const key=document.getElementById('chatkey').value.trim();
+  const prompt=document.getElementById('imgprompt').value.trim();
+  const st=document.getElementById('imgstatus');
+  const out=document.getElementById('imgout');
+  if(!key||!prompt){ alert('Нужны промпт и API-ключ'); return; }
+  st.textContent='Генерация…'; out.innerHTML='';
+  try{
+    const r=await fetch('/api/v1/images/generations',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({prompt,n:1,size:'1024x1024'})});
+    const j=await r.json();
+    const url=j?.data?.[0]?.url || j?.data?.[0]?.b64_json;
+    if(j?.data?.[0]?.url){ out.innerHTML=`<img src="${j.data[0].url}" style="max-width:100%;border-radius:12px;border:1px solid var(--line)">`; st.textContent='Готово'; }
+    else if(j?.data?.[0]?.b64_json){ out.innerHTML=`<img src="data:image/png;base64,${j.data[0].b64_json}" style="max-width:100%;border-radius:12px;border:1px solid var(--line)">`; st.textContent='Готово'; }
+    else { st.textContent='Ответ API'; out.innerHTML=`<div class="mono">${JSON.stringify(j).replace(/</g,'&lt;')}</div>`; }
+  }catch(err){ st.textContent='Ошибка'; out.innerHTML=`<div class="muted">${err}</div>`; }
 });
 </script>
 </body>
