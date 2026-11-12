@@ -2,37 +2,39 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TokenHub Admin</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin · TokenHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
 <style>
-:root{--b:#1d4ed8;--i:#0f172a;--m:#64748b}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:linear-gradient(160deg,#0b1220,#1e293b 55%,#0f172a);font:14px system-ui,sans-serif;color:var(--i)}
-.card{width:min(420px,calc(100% - 32px));background:#fff;border-radius:14px;padding:32px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
-.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;margin-bottom:18px}
-.mark{width:32px;height:32px;border-radius:8px;background:var(--b);color:#fff;display:grid;place-items:center}
-h1{margin:0 0 6px;font-size:26px}p{margin:0 0 18px;color:var(--m)}
-label{display:block;font-size:12px;font-weight:700;color:#475569;margin:0 0 6px}
-input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:12px;margin-bottom:14px;font-size:14px}
-button{width:100%;border:0;border-radius:8px;padding:12px;background:var(--b);color:#fff;font-weight:700;cursor:pointer}
-.err{background:#fff1f2;color:#be123c;border-radius:8px;padding:10px 12px;margin-bottom:14px}
-.hint{margin-top:14px;font-size:12px;color:var(--m);text-align:center}
-a{color:var(--b);text-decoration:none}
+:root{--bg:#0b0907;--card:#17120f;--line:#2a221c;--txt:#f5efe8;--muted:#9a8d82;--acc:#ff7a1a;--acc2:#ff9a4d}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,system-ui,sans-serif;color:var(--txt);background:radial-gradient(900px 500px at 20% 10%,#3a220f 0%,transparent 55%),radial-gradient(700px 400px at 80% 80%,#2a1608 0%,transparent 50%),var(--bg)}
+.top{height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 5%}
+.brand{display:flex;align-items:center;gap:10px;font-family:Unbounded,sans-serif;font-weight:800;text-decoration:none;color:var(--txt)}
+.mark{width:32px;height:32px;border-radius:9px;background:var(--acc);color:#0b0907;display:grid;place-items:center;font-weight:800}
+.wrap{min-height:calc(100vh - 64px);display:grid;place-items:center;padding:24px}
+.card{width:min(440px,100%);background:rgba(23,18,15,.92);border:1px solid var(--line);border-radius:16px;padding:28px}
+h1{font-family:Unbounded,sans-serif;font-size:28px;margin:0 0 8px}
+.muted{color:var(--muted);font-size:13px}
+input{width:100%;background:#100d0b;border:1px solid var(--line);border-radius:10px;padding:12px 14px;color:var(--txt);margin:8px 0 12px}
+.btn{border:0;border-radius:10px;padding:12px 16px;font-weight:700;cursor:pointer;width:100%;background:var(--acc);color:#0b0907}
+.err{background:#3a1510;color:#ffb4a6;border-radius:8px;padding:10px 12px;margin:10px 0}
+a{color:var(--acc2);text-decoration:none}
 </style>
 </head>
 <body>
-<form class="card" method="post" action="{{ secure_url('/admin/login') }}">
-@csrf
-<div class="brand"><span class="mark">T</span> TokenHub Admin</div>
-<h1>Вход в админку</h1>
-<p>Управление тарифами, моделями и статистикой.</p>
-@if($errors->any())<div class="err">{{ $errors->first() }}</div>@endif
-<label>Email</label>
-<input type="email" name="email" value="{{ old('email','admin@tokensale.linkus1.online') }}" required autofocus autocomplete="username">
-<label>Пароль</label>
-<input type="password" name="password" required autocomplete="current-password">
-<label style="display:flex;align-items:center;gap:8px;font-weight:500;margin-bottom:14px"><input type="checkbox" name="remember" value="1" style="width:auto;margin:0"> Запомнить</label>
-<button type="submit">Войти в админку</button>
-<div class="hint"><a href="{{ secure_url('/') }}">На сайт</a></div>
-</form>
+<header class="top"><a class="brand" href="{{ secure_url('/') }}"><span class="mark">T</span>TokenHub</a></header>
+<main class="wrap">
+  <section class="card">
+    <h1>Админка</h1>
+    <p class="muted">Вход только для администраторов.</p>
+    @if($errors->any())<div class="err">{{ $errors->first() }}</div>@endif
+    <form method="post" action="{{ secure_url('/admin/login') }}">
+      @csrf
+      <input type="email" name="email" placeholder="Email" value="{{ old('email') }}" required>
+      <input type="password" name="password" placeholder="Пароль" required>
+      <button class="btn" type="submit">Войти</button>
+    </form>
+  </section>
+</main>
 </body>
 </html>
