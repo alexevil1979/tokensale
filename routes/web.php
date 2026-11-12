@@ -3,28 +3,34 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TokenHubController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\CabinetController;
 
-Route::get("/", [TokenHubController::class, "home"])->name("home");
-Route::get("/models", [TokenHubController::class, "models"])->name("models");
-Route::get("/login", [TokenHubController::class, "login"])->name("login");
-Route::post("/login", [TokenHubController::class, "authenticate"]);
-Route::get("/register", [TokenHubController::class, "register"])->name("register");
-Route::post("/register", [TokenHubController::class, "storeUser"]);
-Route::post("/logout", [TokenHubController::class, "logout"])->middleware("auth")->name("logout");
+Route::get('/', [TokenHubController::class, 'home'])->name('home');
+Route::get('/models', [TokenHubController::class, 'models'])->name('models');
+Route::get('/login', fn () => redirect()->route('cabinet.login'))->name('login');
+Route::get('/register', [TokenHubController::class, 'register'])->name('register');
+Route::post('/register', [TokenHubController::class, 'storeUser']);
+Route::post('/logout', [TokenHubController::class, 'logout'])->middleware('auth')->name('logout');
 
-Route::middleware("auth")->group(function () {
-    Route::get("/dashboard", [TokenHubController::class, "dashboard"])->name("dashboard");
-    Route::post("/keys", [TokenHubController::class, "createKey"])->name("keys.create");
-    Route::delete("/keys/{key}", [TokenHubController::class, "deleteKey"])->name("keys.delete");
-    Route::post("/demo-topup", [TokenHubController::class, "demoTopup"])->name("demo.topup");
+Route::get('/cabinet/login', [CabinetController::class, 'login'])->name('cabinet.login');
+Route::post('/cabinet/login', [CabinetController::class, 'authenticate'])->name('cabinet.login.submit');
+Route::post('/cabinet/login-key', [CabinetController::class, 'loginByKey'])->name('cabinet.login.key');
+Route::post('/cabinet/logout', [CabinetController::class, 'logout'])->middleware('auth')->name('cabinet.logout');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/cabinet', [CabinetController::class, 'index'])->name('cabinet');
+    Route::get('/dashboard', fn () => redirect()->route('cabinet'))->name('dashboard');
+    Route::post('/cabinet/keys', [CabinetController::class, 'createKey'])->name('cabinet.keys.create');
+    Route::delete('/cabinet/keys/{key}', [CabinetController::class, 'deleteKey'])->name('cabinet.keys.delete');
+    Route::post('/cabinet/topup', [CabinetController::class, 'topup'])->name('cabinet.topup');
 });
 
-Route::get("/admin/login", [AdminAuthController::class, "showLogin"])->name("admin.login");
-Route::post("/admin/login", [AdminAuthController::class, "login"])->name("admin.login.submit");
-Route::post("/admin/logout", [AdminAuthController::class, "logout"])->middleware("auth")->name("admin.logout");
+Route::get('/admin/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
+Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
+Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->middleware('auth')->name('admin.logout');
 
-Route::middleware(["auth", "admin"])->prefix("admin")->group(function () {
-    Route::get("/", [AdminController::class, "index"])->name("admin.index");
-    Route::patch("/models/{model}", [AdminController::class, "updateModel"])->name("admin.models.update");
-    Route::post("/models", [AdminController::class, "createModel"])->name("admin.models.create");
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('admin.index');
+    Route::patch('/models/{model}', [AdminController::class, 'updateModel'])->name('admin.models.update');
+    Route::post('/models', [AdminController::class, 'createModel'])->name('admin.models.create');
 });
